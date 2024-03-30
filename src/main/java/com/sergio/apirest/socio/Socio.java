@@ -1,17 +1,13 @@
 package com.sergio.apirest.socio;
 
-import java.util.Set;
-
-import com.sergio.apirest.barco.*;
-
-import jakarta.persistence.Basic;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import com.sergio.apirest.barco.Barco;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -21,11 +17,15 @@ public class Socio {
     @Id
     @GeneratedValue
     private Integer id;
-    @Basic
+
+    @NotBlank(message = "El nombre no puede estar en blanco")
+    @Size(min = 2, max = 50, message = "El nombre debe tener entre 2 y 50 caracteres")
     private String nombre;
+
+    @NotBlank(message = "Los apellidos no pueden estar en blanco")
+    @Size(min = 2, max = 100, message = "Los apellidos deben tener entre 2 y 100 caracteres")
     private String apellidos;
-    @OneToMany(mappedBy = "socio")
+
+    @OneToMany(mappedBy = "socio", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Barco> barcos;
-
-
 }

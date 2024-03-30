@@ -1,37 +1,36 @@
 package com.sergio.apirest.salida;
 
-import java.time.LocalDateTime;
-
-import com.sergio.apirest.barco.*;
-
-import jakarta.persistence.Basic;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import com.sergio.apirest.barco.Barco;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public
-class Salida {
+public class Salida {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotNull(message = "La fecha y hora de salida son obligatorias")
+    @FutureOrPresent(message = "La fecha y hora de salida deben ser en el presente o en el futuro")
     private LocalDateTime fechaHoraSalida;
+
+    @NotBlank(message = "El destino no puede estar vacío")
     private String destino;
 
     @ManyToOne
     @JoinColumn(name = "barco_id")
+    @NotNull(message = "Debe especificar un barco para la salida")
     private Barco barco;
 
-    @Basic
-    private String datosPatron; 
+   
+    private String datosPatron;
 }

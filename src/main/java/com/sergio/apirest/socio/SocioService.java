@@ -2,6 +2,9 @@ package com.sergio.apirest.socio;
 
 import org.springframework.stereotype.Service;
 
+import com.sergio.apirest.barco.Barco;
+import com.sergio.apirest.barco.BarcoRepository;
+
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -10,14 +13,13 @@ import lombok.RequiredArgsConstructor;
 public class SocioService {
 
     private final SocioRepository socioRepo;
-
-    //insertar
-    public void createSocio(Socio socio){
-
-        socioRepo.save(socio);
-
-    }
-
+    private final BarcoRepository barcoRepository;
+      // Insertar
+      @Transactional
+      public Socio createSocio(Socio socio) {
+          return socioRepo.save(socio);
+      }
+      
 
     //Mostrar por id
      public Socio getSocioById(Integer id) {
