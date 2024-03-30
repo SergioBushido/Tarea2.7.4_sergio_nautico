@@ -43,4 +43,27 @@ public class BarcoService {
     public boolean existsById(Integer id) {
         return barcoRepository.existsById(id);
     }
+
+    // 1. Buscar barcos por nombre
+    public List<Barco> findByNombre(String nombre) {
+        return barcoRepository.findByNombreContainingIgnoreCase(nombre);
+    }
+
+    // 2. Obtener la cuota total de amarre
+    public Double getTotalCuotaAmarre() {
+        return barcoRepository.findAll().stream()
+                              .mapToDouble(Barco::getCuotaAmarre)
+                              .sum();
+    }
+
+    // 3. Actualizar la cuota de amarre por número de amarre
+    @Transactional
+    public Optional<Barco> updateCuotaAmarreByNumeroAmarre(Integer numeroAmarre, Double nuevaCuota) {
+        return barcoRepository.findByNumeroAmarre(numeroAmarre)
+            .map(barco -> {
+                barco.setCuotaAmarre(nuevaCuota);
+                return barcoRepository.save(barco);
+            });
+    }
+    
 }

@@ -2,10 +2,10 @@ package com.sergio.barco;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
+@CrossOrigin 
 @RestController
 @RequestMapping("/barcos")
 public class BarcoController {
@@ -30,13 +30,13 @@ public class BarcoController {
     }
 
     @PostMapping
-    public ResponseEntity<Barco> createBarco(@Validated @RequestBody Barco barco) {
+    public ResponseEntity<Barco> createBarco(@RequestBody Barco barco) {
         Barco newBarco = barcoService.save(barco);
         return ResponseEntity.status(HttpStatus.CREATED).body(newBarco);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Barco> updateBarco(@PathVariable Integer id, @Validated @RequestBody Barco barcoDetails) {
+    public ResponseEntity<Barco> updateBarco(@PathVariable Integer id, @RequestBody Barco barcoDetails) {
         return barcoService.update(id, barcoDetails)
                 .map(barco -> ResponseEntity.ok().body(barco))
                 .orElse(ResponseEntity.notFound().build());
@@ -51,4 +51,28 @@ public class BarcoController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    // Obtener barcos por nombre
+    @GetMapping("/buscar")
+    public ResponseEntity<List<Barco>> getBarcosPorNombre(@RequestParam String nombre) {
+        List<Barco> barcos = barcoService.findByNombre(nombre);
+        return ResponseEntity.ok(barcos);
+    }
+
+    // Obtener la cuota total de amarre de todos los barcos
+    @GetMapping("/cuotaTotalAmarre")
+    public ResponseEntity<Double> getTotalCuotaAmarre() {
+        Double totalCuotaAmarre = barcoService.getTotalCuotaAmarre();
+        return ResponseEntity.ok(totalCuotaAmarre);
+    }
+
+    // Actualizar la cuota de amarre de un barco por su número de amarre
+    @PutMapping("/actualizarCuotaAmarre")
+    public ResponseEntity<Barco> updateCuotaAmarre(@RequestParam Integer numeroAmarre,
+            @RequestParam Double nuevaCuota) {
+        return barcoService.updateCuotaAmarreByNumeroAmarre(numeroAmarre, nuevaCuota)
+                .map(barco -> ResponseEntity.ok().body(barco))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
 }
