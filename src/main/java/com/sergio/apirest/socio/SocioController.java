@@ -1,4 +1,4 @@
-package com.sergio.apirest.persona;
+package com.sergio.apirest.socio;
 
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,38 +16,38 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 
 @RestController
-@RequestMapping("/person")
+@RequestMapping("/socio")
 @RequiredArgsConstructor
-public class PersonController {
+public class SocioController {
 
-    private final PersonService personService;
+    private final SocioService socioService;
 
 
     //Crear
     @PostMapping
-    public void createPersona(@RequestBody Person person){
+    public void createSocio(@RequestBody Socio socio){
 
-        personService.createPersona(person);
+        socioService.createSocio(socio);;
 
     }
 
     //Mostrar
    @GetMapping("/{id}")
-    public Person getPersonById(@PathVariable Integer id) {
-        return personService.getPersonById(id); 
+    public Socio getSocioById(@PathVariable Integer id) {
+        return socioService.getSocioById(id); 
     }
 
     //actualizar
     @PutMapping("/{id}")
-    public ResponseEntity<Person> updatePerson(@PathVariable Integer id, @RequestBody Person personDetails) {
-        Person updatedPerson = personService.updatePerson(id, personDetails);
-        return new ResponseEntity<>(updatedPerson, HttpStatus.OK);
+    public ResponseEntity<Socio> updateSocio(@PathVariable Integer id, @RequestBody Socio personDetails) {
+        Socio updatedSocio = socioService.updateSocio(id, personDetails);
+        return new ResponseEntity<>(updatedSocio, HttpStatus.OK);
     }
 
     //Metodo para eliminar por id
      @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePerson(@PathVariable Integer id) {
-        personService.deletePersonById(id);
+    public ResponseEntity<Void> deleteSocio(@PathVariable Integer id) {
+        socioService.deleteSocioById(id);
         return ResponseEntity.noContent().build(); // Devuelve una respuesta 204 No Content
     }
 }

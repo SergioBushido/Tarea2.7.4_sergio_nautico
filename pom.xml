@@ -11,8 +11,8 @@
 	<groupId>com.sergio</groupId>
 	<artifactId>apirest</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>apirest</name>
-	<description>Demo project for Spring Boot</description>
+	<name>Tarea2.7.4</name>
+	<description>Club nautico</description>
 	<properties>
 		<java.version>17</java.version>
 	</properties>

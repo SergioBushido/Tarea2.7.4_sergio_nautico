@@ -1,4 +1,4 @@
-package com.sergio.apirest.persona;
+package com.sergio.apirest.socio;
 
 import jakarta.persistence.Basic;
 import jakarta.persistence.Entity;
@@ -12,14 +12,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Person {
+public class Socio {
     @Id
     @GeneratedValue
     private Integer id;
     @Basic
-    private String firstName;
-    private String lastName;
-    private String email;
+    private String nombre;
+    private String apellidos;
+    private String barcos;
 
 
 }
