@@ -34,7 +34,7 @@ public class SocioService {
         // Actualiza los datos con la información del objeto 'personDetails'
         socio.setNombre(socioDetails.getNombre());
         socio.setApellidos(socioDetails.getApellidos());
-        socio.setBarcos(socioDetails.getBarcos());
+       
         
         // Guarda la persona actualizada en la base de datos
         return socioRepo.save(socio);

@@ -1,0 +1,54 @@
+package com.sergio.barco;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+
+@RestController
+@RequestMapping("/barcos")
+public class BarcoController {
+
+    private final BarcoService barcoService;
+
+    public BarcoController(BarcoService barcoService) {
+        this.barcoService = barcoService;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Barco>> getAllBarcos() {
+        List<Barco> barcos = barcoService.findAll();
+        return ResponseEntity.ok(barcos);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Barco> getBarcoById(@PathVariable Integer id) {
+        return barcoService.findById(id)
+                .map(barco -> ResponseEntity.ok().body(barco))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PostMapping
+    public ResponseEntity<Barco> createBarco(@Validated @RequestBody Barco barco) {
+        Barco newBarco = barcoService.save(barco);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newBarco);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Barco> updateBarco(@PathVariable Integer id, @Validated @RequestBody Barco barcoDetails) {
+        return barcoService.update(id, barcoDetails)
+                .map(barco -> ResponseEntity.ok().body(barco))
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteBarco(@PathVariable Integer id) {
+        if (barcoService.existsById(id)) {
+            barcoService.deleteById(id);
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+}
