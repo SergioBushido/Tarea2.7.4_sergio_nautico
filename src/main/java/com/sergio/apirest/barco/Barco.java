@@ -1,9 +1,9 @@
-package com.sergio.barco;
+package com.sergio.apirest.barco;
 
 import java.util.Set;
 
 import com.sergio.apirest.socio.Socio;
-import com.sergio.salida.Salida;
+import com.sergio.apirest.salida.*;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

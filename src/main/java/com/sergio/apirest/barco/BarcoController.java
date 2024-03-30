@@ -1,4 +1,4 @@
-package com.sergio.barco;
+package com.sergio.apirest.barco;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

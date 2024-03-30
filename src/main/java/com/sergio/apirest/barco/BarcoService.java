@@ -1,4 +1,4 @@
-package com.sergio.barco;
+package com.sergio.apirest.barco;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

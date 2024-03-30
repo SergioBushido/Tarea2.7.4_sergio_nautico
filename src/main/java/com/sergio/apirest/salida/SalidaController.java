@@ -1,4 +1,4 @@
-package com.sergio.salida;
+package com.sergio.apirest.salida;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,5 +1,5 @@
 // SalidaRepository.java
-package com.sergio.salida;
+package com.sergio.apirest.salida;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

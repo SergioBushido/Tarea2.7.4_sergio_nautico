@@ -2,7 +2,7 @@ package com.sergio.apirest.socio;
 
 import java.util.Set;
 
-import com.sergio.barco.Barco;
+import com.sergio.apirest.barco.*;
 
 import jakarta.persistence.Basic;
 import jakarta.persistence.Entity;

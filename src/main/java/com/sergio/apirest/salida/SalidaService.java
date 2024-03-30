@@ -1,4 +1,4 @@
-package com.sergio.salida;
+package com.sergio.apirest.salida;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

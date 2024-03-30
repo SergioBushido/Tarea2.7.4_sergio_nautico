@@ -1,8 +1,8 @@
-package com.sergio.salida;
+package com.sergio.apirest.salida;
 
 import java.time.LocalDateTime;
 
-import com.sergio.barco.Barco;
+import com.sergio.apirest.barco.*;
 
 import jakarta.persistence.Basic;
 import jakarta.persistence.Entity;
