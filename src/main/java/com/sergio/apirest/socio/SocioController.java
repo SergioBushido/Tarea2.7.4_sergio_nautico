@@ -17,7 +17,7 @@ public class SocioController {
 
     // Crear
     @PostMapping
-    public ResponseEntity<Socio> createSocio(@Valid @RequestBody Socio socio){
+    public ResponseEntity<Socio> createSocio(@Valid @RequestBody Socio socio) {
         Socio createdSocio = socioService.createSocio(socio);
         return new ResponseEntity<>(createdSocio, HttpStatus.CREATED);
     }

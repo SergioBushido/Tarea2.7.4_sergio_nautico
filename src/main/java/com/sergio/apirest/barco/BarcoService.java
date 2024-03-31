@@ -3,6 +3,7 @@ package com.sergio.apirest.barco;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -20,6 +21,7 @@ public class BarcoService {
         return barcoRepository.findById(id);
     }
 
+    @Transactional
     public Barco save(Barco barco) {
         return barcoRepository.save(barco);
     }
@@ -27,13 +29,13 @@ public class BarcoService {
     @Transactional
     public Optional<Barco> update(Integer id, Barco barcoDetails) {
         return barcoRepository.findById(id)
-            .map(barco -> {
-                barco.setMatricula(barcoDetails.getMatricula());
-                barco.setNombre(barcoDetails.getNombre());
-                barco.setNumeroAmarre(barcoDetails.getNumeroAmarre());
-                barco.setCuotaAmarre(barcoDetails.getCuotaAmarre());
-                return barcoRepository.save(barco);
-            });
+                .map(barco -> {
+                    barco.setMatricula(barcoDetails.getMatricula());
+                    barco.setNombre(barcoDetails.getNombre());
+                    barco.setNumeroAmarre(barcoDetails.getNumeroAmarre());
+                    barco.setCuotaAmarre(barcoDetails.getCuotaAmarre());
+                    return barcoRepository.save(barco);
+                });
     }
 
     public void deleteById(Integer id) {
@@ -52,18 +54,18 @@ public class BarcoService {
     // 2. Obtener la cuota total de amarre
     public Double getTotalCuotaAmarre() {
         return barcoRepository.findAll().stream()
-                              .mapToDouble(Barco::getCuotaAmarre)
-                              .sum();
+                .mapToDouble(Barco::getCuotaAmarre)
+                .sum();
     }
 
     // 3. Actualizar la cuota de amarre por número de amarre
     @Transactional
     public Optional<Barco> updateCuotaAmarreByNumeroAmarre(Integer numeroAmarre, Double nuevaCuota) {
         return barcoRepository.findByNumeroAmarre(numeroAmarre)
-            .map(barco -> {
-                barco.setCuotaAmarre(nuevaCuota);
-                return barcoRepository.save(barco);
-            });
+                .map(barco -> {
+                    barco.setCuotaAmarre(nuevaCuota);
+                    return barcoRepository.save(barco);
+                });
     }
-    
+
 }
