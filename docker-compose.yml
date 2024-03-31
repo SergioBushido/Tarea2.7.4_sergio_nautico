@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+
+  nautico:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-nautico:3306/nautico?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_JPA_HIBERNATE_DDL_AUTO: create
+    volumes:
+      - ./data:/data
+    depends_on:
+      mysql-nautico:
+        condition: service_healthy
+    networks:
+      - nautico-network
+
+
+  mysql-nautico:
+    image: mysql:latest
+    container_name: mysql-nautico
+    hostname: mysql-nautico
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: nautico
+    ports:
+      - "3307:3306"
+    networks:
+      - nautico-network
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-psecret" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  nautico-network:
+    driver: bridge

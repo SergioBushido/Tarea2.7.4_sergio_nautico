@@ -1,10 +1,7 @@
 package com.sergio.apirest.socio;
 
+
 import org.springframework.stereotype.Service;
-
-import com.sergio.apirest.barco.Barco;
-import com.sergio.apirest.barco.BarcoRepository;
-
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -13,17 +10,18 @@ import lombok.RequiredArgsConstructor;
 public class SocioService {
 
     private final SocioRepository socioRepo;
-    private final BarcoRepository barcoRepository;
-      // Insertar
-      @Transactional
-      public Socio createSocio(Socio socio) {
-          return socioRepo.save(socio);
-      }
-      
+
+    // Insertar
+    @Transactional
+    public Socio createSocio(Socio socio) {
+        socio.getBarcos().forEach(barco -> barco.setSocio(socio));
+        return socioRepo.save(socio);
+    }
+
 
     //Mostrar por id
-     public Socio getSocioById(Integer id) {
-        return socioRepo.findById(id).orElse(null); 
+    public Socio getSocioById(Integer id) {
+        return socioRepo.findById(id).orElse(null);
     }
 
     //Actualizar
@@ -31,13 +29,13 @@ public class SocioService {
     public Socio updateSocio(Integer id, Socio socioDetails) {
         // Encuentra la persona existente o arroja una excepción
         Socio socio = socioRepo.findById(id)
-            .orElseThrow(() -> new RuntimeException("Socio not found with id: " + id));
-        
+                .orElseThrow(() -> new RuntimeException("Socio not found with id: " + id));
+
         // Actualiza los datos con la información del objeto 'personDetails'
         socio.setNombre(socioDetails.getNombre());
         socio.setApellidos(socioDetails.getApellidos());
-       
-        
+
+
         // Guarda la persona actualizada en la base de datos
         return socioRepo.save(socio);
     }

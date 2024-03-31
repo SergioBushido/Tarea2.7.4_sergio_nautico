@@ -3,9 +3,10 @@ package com.sergio.apirest.barco;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
-@CrossOrigin 
+@CrossOrigin
 @RestController
 @RequestMapping("/barcos")
 public class BarcoController {
@@ -69,7 +70,7 @@ public class BarcoController {
     // Actualizar la cuota de amarre de un barco por su número de amarre
     @PutMapping("/actualizarCuotaAmarre")
     public ResponseEntity<Barco> updateCuotaAmarre(@RequestParam Integer numeroAmarre,
-            @RequestParam Double nuevaCuota) {
+                                                   @RequestParam Double nuevaCuota) {
         return barcoService.updateCuotaAmarreByNumeroAmarre(numeroAmarre, nuevaCuota)
                 .map(barco -> ResponseEntity.ok().body(barco))
                 .orElse(ResponseEntity.notFound().build());
