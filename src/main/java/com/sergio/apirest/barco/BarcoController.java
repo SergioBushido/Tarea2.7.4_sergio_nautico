@@ -76,4 +76,6 @@ public class BarcoController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+
+
 }
