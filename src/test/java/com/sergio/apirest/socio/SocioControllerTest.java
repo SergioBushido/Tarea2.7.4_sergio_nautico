@@ -33,7 +33,7 @@ public class SocioControllerTest {
     private SocioController socioController;
 
     @Test
-    void should_create_socio() {
+    void should_crea_socio() {
         // Given: Preparamos los datos de entrada y la respuesta esperada del servicio
         Socio nuevoSocio = new Socio(); // Asume que Socio es una clase con setters para sus campos
         Socio socioCreado = new Socio();
@@ -49,7 +49,7 @@ public class SocioControllerTest {
     }
 
     @Test
-    void should_return_socio_by_id_when_exists() {
+    void should_busca_socio_by_id() {
         // Given: Configuramos el servicio para devolver un socio específico cuando se busque por un ID existente
         Integer socioId = 1;
         Socio expectedSocio = new Socio();
@@ -67,7 +67,7 @@ public class SocioControllerTest {
 
 
     @Test
-    void should_add_barco_to_socio_when_socio_exists() {
+    void should_incluye_barco_a_socio() {
         // Given: Configuramos los datos de entrada y el comportamiento esperado del servicio
         Integer socioId = 1;
         Barco newBarco = new Barco(); // Asume que Barco es una clase con setters para sus campos

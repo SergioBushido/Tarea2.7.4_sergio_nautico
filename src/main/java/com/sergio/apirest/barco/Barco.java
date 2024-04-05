@@ -48,13 +48,13 @@ public class Barco {
     @Positive(message = "La cuota de amarre debe ser un número positivo")
     private Double cuotaAmarre;
 
-    @ManyToOne
-    @JoinColumn(name = "socio_id")
-    @JsonIgnore
+    @ManyToOne //muchos barcos pueden estar asociados a un solo socio
+    @JoinColumn(name = "socio_id")// Define la columna de la llave foránea que conecta con Socio.
+    @JsonIgnore // Indica a Jackson que ignore este campo durante la serialización para evitar referencias cíclicas.
     private Socio socio;
 
-    @OneToMany(mappedBy = "barco")
-    @JsonManagedReference
+    @OneToMany(mappedBy = "barco")// Indica una relación uno a muchos con la entidad Salida (un barco muchas salidas).
+    @JsonManagedReference // Arregla el tema de los bucles infinitos
     private Set<Salida> salidas;
 
 }

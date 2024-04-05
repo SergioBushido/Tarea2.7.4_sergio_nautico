@@ -1,9 +1,10 @@
 package com.sergio.apirest.salida;
 
+import com.sergio.apirest.patron.Patron;
+import com.sergio.apirest.patron.PatronRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -12,6 +13,7 @@ import java.util.Optional;
 public class SalidaService {
 
     private final SalidaRepository salidaRepository;
+    private final PatronRepository patronRepository;
 
     public List<Salida> findAll() {
         return salidaRepository.findAll();
@@ -23,21 +25,28 @@ public class SalidaService {
 
     @Transactional
     public Salida save(Salida salida) {
-        // Aquí puede ir lógica antes de guardar la salida, como validaciones o transformaciones
+        // Validar y/o buscar el Patron antes de asignarlo a la Salida
+        Patron patron = patronRepository.findById(salida.getPatron().getId())
+                .orElseThrow(() -> new RuntimeException("Patron not found"));
+        salida.setPatron(patron);
+
         return salidaRepository.save(salida);
     }
 
     @Transactional
     public Optional<Salida> update(Integer id, Salida salidaDetails) {
-        return salidaRepository.findById(id)
-                .map(salida -> {
-                    // Aquí se actualizan los campos de la salida existente con los detalles proporcionados
-                    salida.setFechaHoraSalida(salidaDetails.getFechaHoraSalida());
-                    salida.setDestino(salidaDetails.getDestino());
-                    salida.setBarco(salidaDetails.getBarco());
-                    salida.setDatosPatron(salidaDetails.getDatosPatron());
-                    return salidaRepository.save(salida);
-                });
+        return salidaRepository.findById(id).map(salida -> {
+            salida.setFechaHoraSalida(salidaDetails.getFechaHoraSalida());
+            salida.setDestino(salidaDetails.getDestino());
+            salida.setBarco(salidaDetails.getBarco());
+
+            // Actualizar Patron
+            Patron patron = patronRepository.findById(salidaDetails.getPatron().getId())
+                    .orElseThrow(() -> new RuntimeException("Patron not found"));
+            salida.setPatron(patron);
+
+            return salidaRepository.save(salida);
+        });
     }
 
     @Transactional
