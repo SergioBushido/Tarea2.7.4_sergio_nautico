@@ -1,5 +1,6 @@
 package com.sergio.apirest.barco;
 
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,14 +18,14 @@ public class BarcoController {
         this.barcoService = barcoService;
     }
 
-    //este aun no funciona
+    @Operation(summary = "Obtener todos los barcos", description = "Retorna todos los barcos disponibles")
     @GetMapping
     public ResponseEntity<List<Barco>> getAllBarcos() {
         List<Barco> barcos = barcoService.findAll();
         return ResponseEntity.ok(barcos);
     }
 
-    //obtiene un barco por id
+    @Operation(summary = "Obtener un barco por ID", description = "Retorna un barco específico por su ID")
     @GetMapping("/{id}")
     public ResponseEntity<Barco> getBarcoById(@PathVariable Integer id) {
         return barcoService.findById(id)
@@ -32,14 +33,14 @@ public class BarcoController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    //inserta un nuevo barco
+    @Operation(summary = "Crear un nuevo barco", description = "Inserta un nuevo barco en la base de datos")
     @PostMapping
     public ResponseEntity<Barco> createBarco(@RequestBody Barco barco) {
         Barco newBarco = barcoService.save(barco);
         return ResponseEntity.status(HttpStatus.CREATED).body(newBarco);
     }
 
-    //actualiza un barco por su id
+    @Operation(summary = "Actualizar un barco", description = "Actualiza los datos de un barco existente")
     @PutMapping("/{id}")
     public ResponseEntity<Barco> updateBarco(@PathVariable Integer id, @RequestBody Barco barcoDetails) {
         return barcoService.update(id, barcoDetails)
@@ -47,7 +48,7 @@ public class BarcoController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    //Elimina barco por su id
+    @Operation(summary = "Eliminar un barco", description = "Elimina un barco de la base de datos por su ID")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBarco(@PathVariable Integer id) {
         if (barcoService.existsById(id)) {
@@ -58,14 +59,14 @@ public class BarcoController {
         }
     }
 
-    // Obtener barcos por nombre
+    @Operation(summary = "Buscar barcos por nombre", description = "Retorna una lista de barcos que coinciden con el nombre especificado")
     @GetMapping("/buscar")
     public ResponseEntity<List<Barco>> getBarcosPorNombre(@RequestParam String nombre) {
         List<Barco> barcos = barcoService.findByNombre(nombre);
         return ResponseEntity.ok(barcos);
     }
 
-    // Obtener la cuota total de amarre de todos los barcos
+    @Operation(summary = "Obtener la cuota total de amarre", description = "Calcula la cuota total de amarre para todos los barcos")
     @GetMapping("/cuotaTotalAmarre")
     public ResponseEntity<Double> getTotalCuotaAmarre() {
         Double totalCuotaAmarre = barcoService.getTotalCuotaAmarre();

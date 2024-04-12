@@ -1,6 +1,7 @@
 package com.sergio.apirest.socio;
 
 import com.sergio.apirest.barco.Barco;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,28 +21,28 @@ public class SocioController {
         this.socioService = socioService;
     }
 
-    // Crear
+    @Operation(summary = "Crear un nuevo socio", description = "Crea y registra un nuevo socio en la base de datos")
     @PostMapping
     public ResponseEntity<Socio> createSocio(@Valid @RequestBody Socio socio) {
         Socio createdSocio = socioService.createSocio(socio);
         return new ResponseEntity<>(createdSocio, HttpStatus.CREATED);
     }
 
-    // Mostrar
+    @Operation(summary = "Obtener un socio por ID", description = "Devuelve un socio específico por su ID")
     @GetMapping("/{id}")
     public ResponseEntity<Socio> getSocioById(@PathVariable Integer id) {
         Socio socio = socioService.getSocioById(id);
         return ResponseEntity.ok(socio);
     }
 
-    // Actualizar
+    @Operation(summary = "Actualizar un socio", description = "Actualiza los datos de un socio existente")
     @PutMapping("/{id}")
     public ResponseEntity<Socio> updateSocio(@PathVariable Integer id, @Valid @RequestBody Socio personDetails) {
         Socio updatedSocio = socioService.updateSocio(id, personDetails);
         return ResponseEntity.ok(updatedSocio);
     }
 
-    // Método para eliminar por ID
+    @Operation(summary = "Eliminar un socio por ID", description = "Elimina un socio de la base de datos usando su ID")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteSocio(@PathVariable Integer id) {
         socioService.deleteSocioById(id);
@@ -49,7 +50,7 @@ public class SocioController {
     }
 
 
-    //insertar un barco a un socio por su id
+    @Operation(summary = "Añadir un barco a un socio", description = "Asocia un barco nuevo o existente a un socio")
     @PostMapping("/{socioId}/barcos")
     public ResponseEntity<Barco> addBarcoToSocio(@PathVariable Integer socioId, @RequestBody Barco barco) {
         try {
