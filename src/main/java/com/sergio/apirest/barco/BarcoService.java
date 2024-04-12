@@ -26,6 +26,7 @@ public class BarcoService {
         return barcoRepository.save(barco);
     }
 
+    //actualiza barco
     @Transactional
     public Optional<Barco> update(Integer id, Barco barcoDetails) {
         return barcoRepository.findById(id)
@@ -38,6 +39,7 @@ public class BarcoService {
                 });
     }
 
+    //elimina barco
     public void deleteById(Integer id) {
         barcoRepository.deleteById(id);
     }

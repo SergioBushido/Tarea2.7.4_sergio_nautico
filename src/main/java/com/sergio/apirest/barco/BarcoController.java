@@ -17,12 +17,14 @@ public class BarcoController {
         this.barcoService = barcoService;
     }
 
+    //este aun no funciona
     @GetMapping
     public ResponseEntity<List<Barco>> getAllBarcos() {
         List<Barco> barcos = barcoService.findAll();
         return ResponseEntity.ok(barcos);
     }
 
+    //obtiene un barco por id
     @GetMapping("/{id}")
     public ResponseEntity<Barco> getBarcoById(@PathVariable Integer id) {
         return barcoService.findById(id)
@@ -30,12 +32,14 @@ public class BarcoController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    //inserta un nuevo barco
     @PostMapping
     public ResponseEntity<Barco> createBarco(@RequestBody Barco barco) {
         Barco newBarco = barcoService.save(barco);
         return ResponseEntity.status(HttpStatus.CREATED).body(newBarco);
     }
 
+    //actualiza un barco por su id
     @PutMapping("/{id}")
     public ResponseEntity<Barco> updateBarco(@PathVariable Integer id, @RequestBody Barco barcoDetails) {
         return barcoService.update(id, barcoDetails)
@@ -43,6 +47,7 @@ public class BarcoController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    //Elimina barco por su id
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteBarco(@PathVariable Integer id) {
         if (barcoService.existsById(id)) {

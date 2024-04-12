@@ -35,12 +35,18 @@ public class SocioControllerTest {
     @Test
     void should_create_socio() {
         // Given: Preparamos los datos de entrada y la respuesta esperada del servicio
-        Socio nuevoSocio = new Socio(); // Asume que Socio es una clase con setters para sus campos
-        Socio socioCreado = new Socio();
+        Socio nuevoSocio = new Socio(); // Este es el socio que creamos
+        Socio socioCreado = new Socio();//Esto mostrará el socio que hemos creado
         when(socioService.createSocio(any(Socio.class))).thenReturn(socioCreado);
+        //Esta línea usa Mockito para configurar una expectativa: cuando se llama al método createSocio
+        //del socioService con cualquier instancia de Socio, debe devolver socioCreado.
+        // any(Socio.class) es un argument matcher de Mockito que coincide con cualquier Socio.
 
         // When: Invocamos el método del controlador para crear un nuevo socio
         ResponseEntity<Socio> respuesta = socioController.createSocio(nuevoSocio);
+        //Llama al método createSocio del controlador con nuevoSocio como parámetro.
+        // El resultado se almacena en respuesta.
+        // Este es el acto central de la prueba: realizar la acción que se está probando.
 
         // Then: Verificamos que el servicio fue invocado correctamente y que la respuesta es la esperada
         verify(socioService).createSocio(nuevoSocio); // Verifica que se llamó al servicio con el socio correcto

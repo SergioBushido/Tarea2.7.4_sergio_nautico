@@ -30,7 +30,7 @@ public class SalidaController {
     }
 
     @PostMapping
-    public ResponseEntity<Salida> createSalida(@RequestBody Salida salida) {
+    public ResponseEntity<Salida> createSalida(@Validated @RequestBody Salida salida) {
         Salida newSalida = salidaService.save(salida);
         return ResponseEntity.status(HttpStatus.CREATED).body(newSalida);
     }

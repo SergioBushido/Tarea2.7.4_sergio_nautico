@@ -23,6 +23,7 @@ public class BarcoControllerTest {
     @InjectMocks
     private BarcoController barcoController;
 
+    //este metodo solo comprueva que se esta llamando al servicio
     @Test
     void should_cuota_total_amarre(){
 

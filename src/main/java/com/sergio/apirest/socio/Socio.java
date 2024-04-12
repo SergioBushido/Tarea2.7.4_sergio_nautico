@@ -29,6 +29,8 @@ public class Socio {
     @Size(min = 2, max = 100, message = "Los apellidos deben tener entre 2 y 100 caracteres")
     private String apellidos;
 
+    //Un socio puede tener muchos barcos
+    // y socio es la clave foranea de barco que es donde apunta
     @OneToMany(mappedBy = "socio", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Barco> barcos;
 
