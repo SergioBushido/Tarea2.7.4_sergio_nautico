@@ -33,14 +33,20 @@ public class SocioControllerTest {
     private SocioController socioController;
 
     @Test
-    void should_crea_socio() {
+    void should_create_socio() {
         // Given: Preparamos los datos de entrada y la respuesta esperada del servicio
-        Socio nuevoSocio = new Socio(); // Asume que Socio es una clase con setters para sus campos
-        Socio socioCreado = new Socio();
+        Socio nuevoSocio = new Socio(); // Este es el socio que creamos
+        Socio socioCreado = new Socio();//Esto mostrará el socio que hemos creado
         when(socioService.createSocio(any(Socio.class))).thenReturn(socioCreado);
+        //Esta línea usa Mockito para configurar una expectativa: cuando se llama al método createSocio
+        //del socioService con cualquier instancia de Socio, debe devolver socioCreado.
+        // any(Socio.class) es un argument matcher de Mockito que coincide con cualquier Socio.
 
         // When: Invocamos el método del controlador para crear un nuevo socio
         ResponseEntity<Socio> respuesta = socioController.createSocio(nuevoSocio);
+        //Llama al método createSocio del controlador con nuevoSocio como parámetro.
+        // El resultado se almacena en respuesta.
+        // Este es el acto central de la prueba: realizar la acción que se está probando.
 
         // Then: Verificamos que el servicio fue invocado correctamente y que la respuesta es la esperada
         verify(socioService).createSocio(nuevoSocio); // Verifica que se llamó al servicio con el socio correcto
@@ -49,7 +55,7 @@ public class SocioControllerTest {
     }
 
     @Test
-    void should_busca_socio_by_id() {
+    void should_return_socio_by_id_when_exists() {
         // Given: Configuramos el servicio para devolver un socio específico cuando se busque por un ID existente
         Integer socioId = 1;
         Socio expectedSocio = new Socio();
@@ -67,7 +73,7 @@ public class SocioControllerTest {
 
 
     @Test
-    void should_incluye_barco_a_socio() {
+    void should_add_barco_to_socio_when_socio_exists() {
         // Given: Configuramos los datos de entrada y el comportamiento esperado del servicio
         Integer socioId = 1;
         Barco newBarco = new Barco(); // Asume que Barco es una clase con setters para sus campos
