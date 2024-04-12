@@ -1,5 +1,6 @@
-package com.sergio.apirest.barco.barcoDto;
+package com.sergio.apirest.barco.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
@@ -7,9 +8,10 @@ import lombok.AllArgsConstructor;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BarcoDto {
+public class BarcoResponse {
     private Integer id;
     private String matricula;
     private String nombre;

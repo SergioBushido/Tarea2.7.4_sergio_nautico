@@ -1,10 +1,9 @@
-package com.sergio.apirest.salida.salidaDto;
+package com.sergio.apirest.salida.dto;
 
-
-import lombok.Getter;
-import lombok.Setter;
-import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
@@ -12,11 +11,9 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SalidaDto {
-    private Integer id;
+public class SalidaRequest {
     private LocalDateTime fechaHoraSalida;
     private String destino;
     private Integer barcoId;
     private Integer patronId;
-
 }
