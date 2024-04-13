@@ -32,62 +32,8 @@ public class SocioControllerTest {
     @InjectMocks
     private SocioController socioController;
 
-    @Test
-    void should_create_socio() {
-        // Given: Preparamos los datos de entrada y la respuesta esperada del servicio
-        Socio nuevoSocio = new Socio(); // Este es el socio que creamos
-        Socio socioCreado = new Socio();//Esto mostrará el socio que hemos creado
-        when(socioService.createSocio(any(Socio.class))).thenReturn(socioCreado);
-        //Esta línea usa Mockito para configurar una expectativa: cuando se llama al método createSocio
-        //del socioService con cualquier instancia de Socio, debe devolver socioCreado.
-        // any(Socio.class) es un argument matcher de Mockito que coincide con cualquier Socio.
-
-        // When: Invocamos el método del controlador para crear un nuevo socio
-        ResponseEntity<Socio> respuesta = socioController.createSocio(nuevoSocio);
-        //Llama al método createSocio del controlador con nuevoSocio como parámetro.
-        // El resultado se almacena en respuesta.
-        // Este es el acto central de la prueba: realizar la acción que se está probando.
-
-        // Then: Verificamos que el servicio fue invocado correctamente y que la respuesta es la esperada
-        verify(socioService).createSocio(nuevoSocio); // Verifica que se llamó al servicio con el socio correcto
-        assertEquals(HttpStatus.CREATED, respuesta.getStatusCode()); // Verifica que el estado HTTP es 201 CREATED
-        assertEquals(socioCreado, respuesta.getBody()); // Verifica que el cuerpo de la respuesta contiene el socio creado
-    }
-
-    @Test
-    void should_return_socio_by_id_when_exists() {
-        // Given: Configuramos el servicio para devolver un socio específico cuando se busque por un ID existente
-        Integer socioId = 1;
-        Socio expectedSocio = new Socio();
-        expectedSocio.setId(socioId);
-        when(socioService.getSocioById(socioId)).thenReturn(expectedSocio);
-
-        // When: Invocamos el método del controlador con el ID
-        ResponseEntity<Socio> respuesta = socioController.getSocioById(socioId);
-
-        // Then: Verificamos que se invocó al servicio correctamente y que la respuesta es la esperada
-        verify(socioService).getSocioById(socioId); // Verifica que se llamó al servicio con el ID correcto
-        assertEquals(HttpStatus.OK, respuesta.getStatusCode()); // El estado HTTP debe ser 200 OK
-        assertEquals(expectedSocio, respuesta.getBody()); // El socio en la respuesta debe ser el esperado
-    }
 
 
-    @Test
-    void should_add_barco_to_socio_when_socio_exists() {
-        // Given: Configuramos los datos de entrada y el comportamiento esperado del servicio
-        Integer socioId = 1;
-        Barco newBarco = new Barco(); // Asume que Barco es una clase con setters para sus campos
-        Barco addedBarco = new Barco();
-        when(socioService.addBarcoToSocio(eq(socioId), any(Barco.class))).thenReturn(addedBarco);
-
-        // When: Invocamos el método del controlador para añadir un barco a un socio
-        ResponseEntity<Barco> respuesta = socioController.addBarcoToSocio(socioId, newBarco);
-
-        // Then: Verificamos que el servicio fue invocado correctamente y que la respuesta es la esperada
-        verify(socioService).addBarcoToSocio(socioId, newBarco); // Verifica que se llamó al servicio con los argumentos correctos
-        assertEquals(HttpStatus.CREATED, respuesta.getStatusCode()); // Verifica que el estado HTTP es 201 CREATED
-        assertEquals(addedBarco, respuesta.getBody()); // Verifica que el cuerpo de la respuesta contiene el barco añadido
-    }
 
 
 

@@ -40,7 +40,12 @@ public class PatronService {
     }
 
     @Transactional
-    public void deletePatron(Integer id) {
-        patronRepository.deleteById(id);
+    public boolean deletePatron(Integer id) {
+        if (patronRepository.existsById(id)) {
+            patronRepository.deleteById(id);
+            return true;
+        } else {
+            return false;
+        }
     }
 }
