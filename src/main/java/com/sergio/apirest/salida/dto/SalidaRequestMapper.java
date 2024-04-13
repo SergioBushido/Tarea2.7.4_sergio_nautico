@@ -1,7 +1,7 @@
 package com.sergio.apirest.salida.dto;
 
-import com.sergio.apirest.salida.Salida;
 import com.sergio.apirest.barco.BarcoRepository;
+import com.sergio.apirest.salida.Salida;
 import com.sergio.apirest.patron.PatronRepository;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

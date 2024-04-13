@@ -1,5 +1,9 @@
 package com.sergio.apirest.barco;
 
+import com.sergio.apirest.barco.dto.BarcoRequest;
+import com.sergio.apirest.barco.dto.BarcoRequestMapper;
+import com.sergio.apirest.barco.dto.BarcoResponse;
+import com.sergio.apirest.barco.dto.BarcoResponseMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,45 +16,49 @@ import java.util.Optional;
 public class BarcoService {
 
     private final BarcoRepository barcoRepository;
+    private final BarcoRequestMapper barcoRequestMapper;
+    private final BarcoResponseMapper barcoResponseMapper;
 
-    public List<Barco> findAll() {
-        return barcoRepository.findAll();
+    public List<BarcoResponse> findAll() {
+        return barcoResponseMapper.entitiesToResponses(barcoRepository.findAll());
     }
 
-    public Optional<Barco> findById(Integer id) {
-        return barcoRepository.findById(id);
+    public Optional<BarcoResponse> findById(final Integer id) {
+        final Optional<Barco> barcoOptional = barcoRepository.findById(id);
+        return barcoOptional.map(barcoResponseMapper::entityToResponse);
     }
 
     @Transactional
-    public Barco save(Barco barco) {
-        return barcoRepository.save(barco);
+    public BarcoResponse save(final BarcoRequest barcoRequest) {
+        Barco barco = barcoRequestMapper.dtoToEntity(barcoRequest);
+        barco = barcoRepository.save(barco);
+        return barcoResponseMapper.entityToResponse(barco);
     }
 
     //actualiza barco
     @Transactional
-    public Optional<Barco> update(Integer id, Barco barcoDetails) {
-        return barcoRepository.findById(id)
-                .map(barco -> {
-                    barco.setMatricula(barcoDetails.getMatricula());
-                    barco.setNombre(barcoDetails.getNombre());
-                    barco.setNumeroAmarre(barcoDetails.getNumeroAmarre());
-                    barco.setCuotaAmarre(barcoDetails.getCuotaAmarre());
-                    return barcoRepository.save(barco);
-                });
+    public Optional<BarcoResponse> update(final Integer id, final BarcoRequest barcoDetails) {
+        final Optional<Barco> existingBarco = barcoRepository.findById(id);
+        existingBarco.ifPresent(barco -> {
+            barcoResponseMapper.updateEntityFromDto(barcoDetails, barco);
+            barcoRepository.save(barco);
+        });
+        return barcoResponseMapper.entityToOptionalResponse(existingBarco);
     }
 
     //elimina barco
-    public void deleteById(Integer id) {
+    public void deleteById(final Integer id) {
         barcoRepository.deleteById(id);
     }
 
-    public boolean existsById(Integer id) {
+    public boolean existsById(final Integer id) {
         return barcoRepository.existsById(id);
     }
 
     // 1. Buscar barcos por nombre
-    public List<Barco> findByNombre(String nombre) {
-        return barcoRepository.findByNombreContainingIgnoreCase(nombre);
+    public List<BarcoResponse> findByNombre(final String nombre) {
+        final var barcos = barcoRepository.findByNombreContainingIgnoreCase(nombre);
+        return barcoResponseMapper.entitiesToResponses(barcos);
     }
 
     // 2. Obtener la cuota total de amarre
@@ -62,12 +70,13 @@ public class BarcoService {
 
     // 3. Actualizar la cuota de amarre por número de amarre
     @Transactional
-    public Optional<Barco> updateCuotaAmarreByNumeroAmarre(Integer numeroAmarre, Double nuevaCuota) {
-        return barcoRepository.findByNumeroAmarre(numeroAmarre)
-                .map(barco -> {
-                    barco.setCuotaAmarre(nuevaCuota);
-                    return barcoRepository.save(barco);
-                });
+    public Optional<BarcoResponse> updateCuotaAmarreByNumeroAmarre(final Integer numeroAmarre, final Double nuevaCuota) {
+        final Optional<Barco> existingBarco = barcoRepository.findByNumeroAmarre(numeroAmarre);
+        existingBarco.ifPresent(barco -> {
+            barco.setCuotaAmarre(nuevaCuota);
+            barcoRepository.save(barco);
+        });
+        return barcoResponseMapper.entityToOptionalResponse(existingBarco);
     }
 
 }

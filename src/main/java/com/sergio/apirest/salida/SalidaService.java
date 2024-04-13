@@ -2,6 +2,8 @@ package com.sergio.apirest.salida;
 
 import com.sergio.apirest.patron.Patron;
 import com.sergio.apirest.patron.PatronRepository;
+import com.sergio.apirest.salida.dto.SalidaRequestMapper;
+import com.sergio.apirest.salida.dto.SalidaResponseMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +16,9 @@ public class SalidaService {
 
     private final SalidaRepository salidaRepository;
     private final PatronRepository patronRepository;
+    private final SalidaRequestMapper salidaRequestMapper;
+    private final SalidaResponseMapper salidaResponseMapper;
+
 
     public List<Salida> findAll() {
         return salidaRepository.findAll();

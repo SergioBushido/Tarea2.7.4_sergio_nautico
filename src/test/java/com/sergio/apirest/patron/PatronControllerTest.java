@@ -1,7 +1,5 @@
 package com.sergio.apirest.patron;
 
-import com.sergio.apirest.barco.BarcoController;
-import com.sergio.apirest.barco.BarcoService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

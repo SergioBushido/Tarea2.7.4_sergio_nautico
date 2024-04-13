@@ -3,6 +3,8 @@ package com.sergio.apirest.socio;
 
 import com.sergio.apirest.barco.Barco;
 import com.sergio.apirest.barco.BarcoRepository;
+import com.sergio.apirest.socio.dto.SocioRequestMapper;
+import com.sergio.apirest.socio.dto.SocioResponseMapper;
 import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -16,8 +18,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class SocioService {
 
+
     private final SocioRepository socioRepo;
     private final BarcoRepository barcoRepository;
+    private final SocioRequestMapper socioRequestMapper;
+    private final SocioResponseMapper socioResponseMapper;
 
 
     // Insertar

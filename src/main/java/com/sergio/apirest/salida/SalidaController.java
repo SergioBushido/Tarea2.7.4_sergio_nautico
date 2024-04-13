@@ -4,32 +4,38 @@ import com.sergio.apirest.salida.dto.SalidaRequest;
 import com.sergio.apirest.salida.dto.SalidaResponse;
 import com.sergio.apirest.salida.dto.SalidaRequestMapper;
 import com.sergio.apirest.salida.dto.SalidaResponseMapper;
-import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/salidas")
+@RequestMapping("/api/salidas")
+@Api(value = "SalidaController", description = "Controlador para la gestión de salidas de barcos")
 public class SalidaController {
 
     private final SalidaService salidaService;
     private final SalidaRequestMapper salidaRequestMapper;
     private final SalidaResponseMapper salidaResponseMapper;
 
-    public SalidaController(SalidaService salidaService,
-                            SalidaRequestMapper salidaRequestMapper,
-                            SalidaResponseMapper salidaResponseMapper) {
+    @Autowired
+    public SalidaController(SalidaService salidaService, SalidaRequestMapper salidaRequestMapper, SalidaResponseMapper salidaResponseMapper) {
         this.salidaService = salidaService;
         this.salidaRequestMapper = salidaRequestMapper;
         this.salidaResponseMapper = salidaResponseMapper;
     }
-
-    @Operation(summary = "Obtener todas las salidas", description = "Devuelve una lista de todas las salidas registradas")
     @GetMapping
+    @ApiOperation(value = "Obtiene todas las salidas", notes = "Devuelve una lista de todas las salidas registradas")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Salidas encontradas exitosamente")
+    })
     public ResponseEntity<List<SalidaResponse>> getAllSalidas() {
         List<Salida> salidas = salidaService.findAll();
         List<SalidaResponse> salidaResponses = salidas.stream()
@@ -38,37 +44,47 @@ public class SalidaController {
         return ResponseEntity.ok(salidaResponses);
     }
 
-    @Operation(summary = "Obtener una salida por ID", description = "Devuelve una salida específica buscando por su ID")
     @GetMapping("/{id}")
+    @ApiOperation(value = "Obtiene una salida por su ID", notes = "Devuelve una salida específica por su ID")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Salida encontrada"),
+            @ApiResponse(code = 404, message = "Salida no encontrada")
+    })
     public ResponseEntity<SalidaResponse> getSalidaById(@PathVariable Integer id) {
         return salidaService.findById(id)
                 .map(salida -> ResponseEntity.ok(salidaResponseMapper.entityToResponse(salida)))
-                .orElse(ResponseEntity.notFound().build());
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @Operation(summary = "Crear una nueva salida", description = "Crea y registra una nueva salida")
     @PostMapping
-    public ResponseEntity<SalidaResponse> createSalida(@Validated @RequestBody SalidaRequest salidaRequest) {
+    @ApiOperation(value = "Crea una nueva salida", notes = "Guarda y retorna los detalles de la nueva salida creada")
+    @ApiResponses(value = {
+            @ApiResponse(code = 201, message = "Salida creada exitosamente"),
+    })
+    public ResponseEntity<SalidaResponse> createSalida(@RequestBody SalidaRequest salidaRequest) {
         Salida salida = salidaRequestMapper.dtoToEntity(salidaRequest);
-        Salida newSalida = salidaService.save(salida);
-        SalidaResponse salidaResponse = salidaResponseMapper.entityToResponse(newSalida);
-        return ResponseEntity.status(HttpStatus.CREATED).body(salidaResponse);
+        Salida savedSalida = salidaService.save(salida);
+        return new ResponseEntity<>(salidaResponseMapper.entityToResponse(savedSalida), HttpStatus.CREATED);
     }
 
-    @Operation(summary = "Actualizar una salida existente", description = "Actualiza los datos de una salida existente")
     @PutMapping("/{id}")
-    public ResponseEntity<SalidaResponse> updateSalida(@PathVariable Integer id,
-                                                       @Validated @RequestBody SalidaRequest salidaRequest) {
-        return salidaService.findById(id).map(existingSalida -> {
-            salidaRequestMapper.updateEntityFromDto(salidaRequest, existingSalida);
-            Salida updatedSalida = salidaService.save(existingSalida);
-            SalidaResponse salidaResponse = salidaResponseMapper.entityToResponse(updatedSalida);
-            return ResponseEntity.ok().body(salidaResponse);
-        }).orElse(ResponseEntity.notFound().build());
+    @ApiOperation(value = "Actualiza una salida existente", notes = "Actualiza y retorna la salida especificada por el ID")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Salida actualizada exitosamente"),
+            @ApiResponse(code = 404, message = "Salida no encontrada")
+    })
+    public ResponseEntity<SalidaResponse> updateSalida(@PathVariable Integer id, @RequestBody SalidaRequest salidaRequest) {
+        return salidaService.update(id, salidaRequestMapper.dtoToEntity(salidaRequest))
+                .map(updatedSalida -> ResponseEntity.ok(salidaResponseMapper.entityToResponse(updatedSalida)))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @Operation(summary = "Eliminar una salida", description = "Elimina una salida registrada en la base de datos")
     @DeleteMapping("/{id}")
+    @ApiOperation(value = "Elimina una salida por su ID", notes = "Elimina la salida especificada por el ID")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Salida eliminada exitosamente"),
+            @ApiResponse(code = 404, message = "Salida no encontrada")
+    })
     public ResponseEntity<Void> deleteSalida(@PathVariable Integer id) {
         if (salidaService.existsById(id)) {
             salidaService.deleteById(id);
