@@ -37,11 +37,8 @@ public class SalidaController {
             @ApiResponse(code = 200, message = "Salidas encontradas exitosamente")
     })
     public ResponseEntity<List<SalidaResponse>> getAllSalidas() {
-        List<Salida> salidas = salidaService.findAll();
-        List<SalidaResponse> salidaResponses = salidas.stream()
-                .map(salidaResponseMapper::entityToResponse)
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(salidaResponses);
+        final List<SalidaResponse> salidas = salidaService.findAll();
+        return ResponseEntity.ok(salidas);
     }
 
     @GetMapping("/{id}")
@@ -50,10 +47,10 @@ public class SalidaController {
             @ApiResponse(code = 200, message = "Salida encontrada"),
             @ApiResponse(code = 404, message = "Salida no encontrada")
     })
-    public ResponseEntity<SalidaResponse> getSalidaById(@PathVariable Integer id) {
+    public ResponseEntity<SalidaResponse> getSalidaById(@PathVariable final Integer id) {
         return salidaService.findById(id)
-                .map(salida -> ResponseEntity.ok(salidaResponseMapper.entityToResponse(salida)))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(salida -> ResponseEntity.ok().body(salida))
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
@@ -61,10 +58,9 @@ public class SalidaController {
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Salida creada exitosamente"),
     })
-    public ResponseEntity<SalidaResponse> createSalida(@RequestBody SalidaRequest salidaRequest) {
-        Salida salida = salidaRequestMapper.dtoToEntity(salidaRequest);
-        Salida savedSalida = salidaService.save(salida);
-        return new ResponseEntity<>(salidaResponseMapper.entityToResponse(savedSalida), HttpStatus.CREATED);
+    public ResponseEntity<SalidaResponse> createSalida(@RequestBody final SalidaRequest salidaRequest) {
+        final SalidaResponse savedSalida = salidaService.save(salidaRequest);
+        return new ResponseEntity<>(savedSalida, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")

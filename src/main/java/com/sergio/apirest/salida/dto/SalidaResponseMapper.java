@@ -14,7 +14,5 @@ public interface SalidaResponseMapper {
 
     List<SalidaResponse> entitiesToResponses(List<Salida> salidas);
 
-    @Mapping(target = "barcoId", source = "barco.id")
-    @Mapping(target = "patronId", source = "patron.id")
-    SalidaResponse salidaToSalidaResponse(Salida salida);
+
 }

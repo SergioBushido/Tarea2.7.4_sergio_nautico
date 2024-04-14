@@ -12,8 +12,6 @@ public interface BarcoResponseMapper {
 
     BarcoResponse entityToResponse(Barco barco);
 
-    Optional<BarcoResponse> entityToOptionalResponse(Optional<Barco> barco);
-
     void updateEntityFromDto(BarcoRequest barcoRequest, @MappingTarget Barco entity);
 
     List<BarcoResponse> entitiesToResponses(List<Barco> barcos);

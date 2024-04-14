@@ -4,6 +4,7 @@ import com.sergio.apirest.barco.dto.BarcoRequest;
 import com.sergio.apirest.barco.dto.BarcoRequestMapper;
 import com.sergio.apirest.barco.dto.BarcoResponse;
 import com.sergio.apirest.barco.dto.BarcoResponseMapper;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class BarcoService {
 
     private final BarcoRepository barcoRepository;
@@ -43,7 +44,7 @@ public class BarcoService {
             barcoResponseMapper.updateEntityFromDto(barcoDetails, barco);
             barcoRepository.save(barco);
         });
-        return barcoResponseMapper.entityToOptionalResponse(existingBarco);
+        return existingBarco.map(barcoResponseMapper::entityToResponse);
     }
 
     //elimina barco
@@ -76,7 +77,7 @@ public class BarcoService {
             barco.setCuotaAmarre(nuevaCuota);
             barcoRepository.save(barco);
         });
-        return barcoResponseMapper.entityToOptionalResponse(existingBarco);
+        return existingBarco.map(barcoResponseMapper::entityToResponse);
     }
 
 }

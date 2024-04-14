@@ -1,11 +1,13 @@
 package com.sergio.apirest.patron;
 
+import com.sergio.apirest.barco.dto.BarcoResponse;
 import com.sergio.apirest.patron.dto.PatronRequest;
 import com.sergio.apirest.patron.dto.PatronRequestMapper;
 import com.sergio.apirest.patron.dto.PatronResponse;
 import com.sergio.apirest.patron.dto.PatronResponseMapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,17 +21,11 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/patrons")
 @Api(value = "PatronController", description = "Controlador para la gestión de patrones")
+@AllArgsConstructor
 public class PatronController {
-    private final PatronService patronService;
-    private final PatronRequestMapper patronRequestMapper;
-    private final PatronResponseMapper patronResponseMapper;
 
-    @Autowired
-    public PatronController(PatronService patronService, PatronRequestMapper patronRequestMapper, PatronResponseMapper patronResponseMapper) {
-        this.patronService = patronService;
-        this.patronRequestMapper = patronRequestMapper;
-        this.patronResponseMapper = patronResponseMapper;
-    }
+    private final PatronService patronService;
+
 
     @GetMapping
     @ApiOperation(value = "Obtiene todos los patrones", notes = "Retorna una lista de todos los patrones disponibles")
@@ -37,9 +33,7 @@ public class PatronController {
             @ApiResponse(code = 200, message = "Patrones encontrados exitosamente")
     })
     public List<PatronResponse> getAllPatrons() {
-        return patronService.findAllPatrones().stream()
-                .map(patronResponseMapper::entityToResponse)
-                .collect(Collectors.toList());
+        return patronService.findAllPatrones();
     }
     @GetMapping("/{id}")
     @ApiOperation(value = "Busca un patrón por ID", notes = "Retorna un patrón específico por su ID")
@@ -47,10 +41,10 @@ public class PatronController {
             @ApiResponse(code = 200, message = "Patrón encontrado"),
             @ApiResponse(code = 404, message = "Patrón no encontrado")
     })
-    public ResponseEntity<PatronResponse> getPatronById(@PathVariable Integer id) {
+    public ResponseEntity<PatronResponse> getPatronById(@PathVariable final Integer id) {
         return patronService.findPatronById(id)
-                .map(patron -> ResponseEntity.ok(patronResponseMapper.entityToResponse(patron)))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(patron -> ResponseEntity.ok().body(patron))
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
@@ -58,10 +52,9 @@ public class PatronController {
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Patrón creado exitosamente"),
     })
-    public ResponseEntity<PatronResponse> createPatron(@RequestBody PatronRequest patronRequest) {
-        Patron patron = patronRequestMapper.dtoToEntity(patronRequest);
-        Patron savedPatron = patronService.savePatron(patron);
-        return new ResponseEntity<>(patronResponseMapper.entityToResponse(savedPatron), HttpStatus.CREATED);
+    public ResponseEntity<PatronResponse> createPatron(@RequestBody final PatronRequest patronRequest) {
+        final PatronResponse newPatron = patronService.savePatron(patronRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newPatron);
     }
 
     @PutMapping("/{id}")
@@ -70,13 +63,10 @@ public class PatronController {
             @ApiResponse(code = 200, message = "Patrón actualizado exitosamente"),
             @ApiResponse(code = 404, message = "Patrón no encontrado")
     })
-    public ResponseEntity<PatronResponse> updatePatron(@PathVariable Integer id, @RequestBody PatronRequest patronRequest) {
-        try {
-            Patron updatedPatron = patronService.updatePatron(id, patronRequestMapper.dtoToEntity(patronRequest));
-            return ResponseEntity.ok(patronResponseMapper.entityToResponse(updatedPatron));
-        } catch (RuntimeException e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<PatronResponse> updatePatron(@PathVariable final Integer id, @RequestBody final PatronRequest patronRequest) {
+        return patronService.updatePatron(id, patronRequest)
+                .map(patron -> ResponseEntity.ok().body(patron))
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
@@ -85,7 +75,7 @@ public class PatronController {
             @ApiResponse(code = 200, message = "Patrón eliminado exitosamente"),
             @ApiResponse(code = 404, message = "Patrón no encontrado")
     })
-    public ResponseEntity<Void> deletePatron(@PathVariable Integer id) {
+    public ResponseEntity<Void> deletePatron(@PathVariable final Integer id) {
         boolean isDeleted = patronService.deletePatron(id);
         if (isDeleted) {
             return ResponseEntity.ok().build();

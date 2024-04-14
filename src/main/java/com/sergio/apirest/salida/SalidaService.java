@@ -1,8 +1,11 @@
 package com.sergio.apirest.salida;
 
+import com.sergio.apirest.barco.Barco;
 import com.sergio.apirest.patron.Patron;
 import com.sergio.apirest.patron.PatronRepository;
+import com.sergio.apirest.salida.dto.SalidaRequest;
 import com.sergio.apirest.salida.dto.SalidaRequestMapper;
+import com.sergio.apirest.salida.dto.SalidaResponse;
 import com.sergio.apirest.salida.dto.SalidaResponseMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,22 +23,25 @@ public class SalidaService {
     private final SalidaResponseMapper salidaResponseMapper;
 
 
-    public List<Salida> findAll() {
-        return salidaRepository.findAll();
+    public List<SalidaResponse> findAll() {
+        return salidaResponseMapper.entitiesToResponses(salidaRepository.findAll());
     }
 
-    public Optional<Salida> findById(Integer id) {
-        return salidaRepository.findById(id);
+    public Optional<SalidaResponse> findById(final Integer id) {
+        final Optional<Salida> salidaOptional = salidaRepository.findById(id);
+        return salidaOptional.map(salidaResponseMapper::entityToResponse);
     }
 
     @Transactional
-    public Salida save(Salida salida) {
+    public SalidaResponse save(final SalidaRequest salidaRequest) {
         // Validar y/o buscar el Patron antes de asignarlo a la Salida
-        Patron patron = patronRepository.findById(salida.getPatron().getId())
+        final Patron patron = patronRepository.findById(salidaRequest.getPatronId())
                 .orElseThrow(() -> new RuntimeException("Patron not found"));
-        salida.setPatron(patron);
 
-        return salidaRepository.save(salida);
+        final Salida salida = salidaRequestMapper.dtoToEntity(salidaRequest);
+        salida.setPatron(patron);
+        salidaRepository.save(salida);
+        return salidaResponseMapper.entityToResponse(salida);
     }
 
     @Transactional

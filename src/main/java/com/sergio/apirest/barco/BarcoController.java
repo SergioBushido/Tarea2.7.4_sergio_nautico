@@ -78,7 +78,7 @@ public class BarcoController {
     // Actualizar la cuota de amarre de un barco por su número de amarre
     @PutMapping("/actualizarCuotaAmarre")
     public ResponseEntity<BarcoResponse> updateCuotaAmarre(@RequestParam final Integer numeroAmarre,
-                                                   @RequestParam final Double nuevaCuota) {
+                                                           @RequestParam final Double nuevaCuota) {
         return barcoService.updateCuotaAmarreByNumeroAmarre(numeroAmarre, nuevaCuota)
                 .map(barco -> ResponseEntity.ok().body(barco))
                 .orElse(ResponseEntity.notFound().build());
