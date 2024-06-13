@@ -34,6 +34,14 @@ public class SocioController {
         return ResponseEntity.ok(socio);
     }
 
+    // Método para obtener todos los socios
+    @GetMapping
+    public ResponseEntity<List<Socio>> getAllSocios() {
+        List<Socio> socios = socioService.getAllSocios();
+        return ResponseEntity.ok(socios);
+    }
+
+
     // Actualizar
     @PutMapping("/{id}")
     public ResponseEntity<Socio> updateSocio(@PathVariable Integer id, @Valid @RequestBody Socio personDetails) {

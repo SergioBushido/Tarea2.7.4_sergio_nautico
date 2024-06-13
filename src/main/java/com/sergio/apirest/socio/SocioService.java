@@ -49,6 +49,11 @@ public class SocioService {
         return socioRepo.save(socio);
     }
 
+    public List<Socio> getAllSocios() {
+        return socioRepo.findAll();
+    }
+
+
     //Eliminar
     @Transactional
     public void deleteSocioById(Integer id) {

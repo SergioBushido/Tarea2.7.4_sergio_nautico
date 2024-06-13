@@ -34,18 +34,13 @@ public class Barco {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @NotBlank(message = "La matrícula no puede estar vacía")
     private String matricula;
 
-    @NotBlank(message = "El nombre no puede estar vacío")
-    @Size(min = 2, max = 100, message = "El nombre debe tener entre 2 y 100 caracteres")
     private String nombre;
 
-    @NotNull(message = "El número de amarre es obligatorio")
     private Integer numeroAmarre;
 
-    @NotNull(message = "La cuota de amarre es obligatoria")
-    @Positive(message = "La cuota de amarre debe ser un número positivo")
+
     private Double cuotaAmarre;
 
     @ManyToOne //muchos barcos pueden estar asociados a un solo socio
