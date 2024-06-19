@@ -44,7 +44,7 @@ public class Barco {
     private Double cuotaAmarre;
 
     @ManyToOne //muchos barcos pueden estar asociados a un solo socio
-    @JoinColumn(name = "socio_id")// Define la columna de la llave foránea que conecta con Socio.
+    @JoinColumn(name = "socio_id", nullable = true)// Define la columna de la llave foránea que conecta con Socio.nullable = true
     @JsonIgnore // Indica a Jackson que ignore este campo durante la serialización para evitar referencias cíclicas.
     private Socio socio;
 
