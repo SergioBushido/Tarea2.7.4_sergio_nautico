@@ -35,6 +35,7 @@ public class AuthenticationService {
     // con esto se guarda el usuario en la bbdd
     public AuthenticationResponse register(RegisterRequest request) {
         var user = User.builder()
+                .username(request.getUsername())
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword())) // se cifra la pass
                 .role(Role.USER)
