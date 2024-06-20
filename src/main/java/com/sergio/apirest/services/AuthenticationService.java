@@ -3,6 +3,7 @@ package com.sergio.apirest.services;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sergio.apirest.repositories.TokenRepository;
 import com.sergio.apirest.repositories.UserRepository;
+import com.sergio.apirest.user.Role;
 import com.sergio.apirest.user.Token;
 import com.sergio.apirest.user.TokenType;
 import com.sergio.apirest.user.User;
@@ -36,6 +37,7 @@ public class AuthenticationService {
         var user = User.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword())) // se cifra la pass
+                .role(Role.USER)
                 .build();
         var savedUser = userRepository.save(user); // aqui es cuando se guarda
         var jwtToken = jwtService.generateToken(user); // aqui se genera el token

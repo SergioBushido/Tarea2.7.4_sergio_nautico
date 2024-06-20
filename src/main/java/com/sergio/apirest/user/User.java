@@ -2,13 +2,13 @@ package com.sergio.apirest.user;
 
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.sergio.apirest.user.auth.CustomUserDetails;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "_user", uniqueConstraints = {@UniqueConstraint(columnNames = "email")})
-public class User implements UserDetails {
+public class User implements CustomUserDetails {
     @Id
     @GeneratedValue
     private long id;
@@ -44,6 +44,11 @@ public class User implements UserDetails {
     @Override
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getEmail() {
+        return email;
     }
 
     @Override

@@ -9,6 +9,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -32,7 +33,7 @@ public class ApplicationConfig {
 
     @Bean//para obtener los detalles del usuario
     public UserDetailsService userDetailsService() {
-        return username -> userRepository.findByEmail(username)
+        return email -> (UserDetails) userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
@@ -71,7 +72,8 @@ public class ApplicationConfig {
                 POST.name(),
                 DELETE.name(),
                 PUT.name(),
-                PATCH.name()
+                PATCH.name(),
+                OPTIONS.name()
         ));
         source.registerCorsConfiguration("/**", config);//con esto aplicamos el filtro a toda la app
         return new CorsFilter(source);
