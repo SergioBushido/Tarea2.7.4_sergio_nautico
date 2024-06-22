@@ -1,7 +1,5 @@
 package com.sergio.apirest.controller;
 
-
-
 import com.sergio.apirest.services.AuthenticationService;
 import com.sergio.apirest.user.auth.AuthenticationRequest;
 import com.sergio.apirest.user.auth.AuthenticationResponse;
@@ -26,7 +24,7 @@ import java.io.IOException;
 @Tag(name = "AuthenticationController", description = "Controlador para operaciones relacionadas con authenticación de usuarios")
 
 @RestController
-@RequestMapping("api/v1/auth")
+@RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthenticationController {
     private final AuthenticationService authenticationService;

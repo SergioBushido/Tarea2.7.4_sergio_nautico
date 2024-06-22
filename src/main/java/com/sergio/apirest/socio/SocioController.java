@@ -1,17 +1,19 @@
 package com.sergio.apirest.socio;
 
 import com.sergio.apirest.barco.Barco;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
+
+@Tag(name = "SocioController", description = "Controlador para operaciones relacionadas con socios")
 @RestController
-@RequestMapping("/socio")
+@RequestMapping("/api/v1/socios")
 public class SocioController {
 
     private final SocioService socioService;
@@ -35,6 +37,7 @@ public class SocioController {
     }
 
     // Método para obtener todos los socios
+    @Operation(summary = "Listar todos los socios")
     @GetMapping
     public ResponseEntity<List<Socio>> getAllSocios() {
         List<Socio> socios = socioService.getAllSocios();
