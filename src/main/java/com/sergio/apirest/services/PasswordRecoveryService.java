@@ -8,31 +8,16 @@ import java.security.SecureRandom;
 
 @Service
 public class PasswordRecoveryService {
+    public class UserService {
 
-    @Autowired
-    private EmailService emailService;
 
-    private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-    private static final int PASSWORD_LENGTH = 8;
-    private final SecureRandom random = new SecureRandom();
+        private EmailService emailService;
 
-    public void recoverPassword(String email) {
-        String newPassword = generateRandomPassword();
-        // Aquí puedes agregar la lógica para guardar la nueva contraseña en la base de datos
-
-        // Enviar el correo electrónico con la nueva contraseña
-        try {
-            emailService.sendSimpleMessage(email, "Recuperación de contraseña", "Tu nueva contraseña es: " + newPassword);
-        } catch (IOException e) {
-            e.printStackTrace();
+        public void sendPasswordResetEmail(String userEmail) {
+            String subject = "Password Reset Request";
+            String text = "To reset your password, click the link below:\n" +
+                    "http://yourapp.com/reset?token=your-token-here";
+            emailService.sendSimpleMessage(userEmail, subject, text);
         }
-    }
-
-    private String generateRandomPassword() {
-        StringBuilder password = new StringBuilder(PASSWORD_LENGTH);
-        for (int i = 0; i < PASSWORD_LENGTH; i++) {
-            password.append(CHARACTERS.charAt(random.nextInt(CHARACTERS.length())));
-        }
-        return password.toString();
     }
 }
