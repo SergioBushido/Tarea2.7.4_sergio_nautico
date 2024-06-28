@@ -1,4 +1,4 @@
-package com.sergio.apirest.services;
+/*package com.sergio.apirest.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
@@ -19,3 +19,4 @@ public class EmailService {
         mailSender.send(message);
     }
 }
+*/

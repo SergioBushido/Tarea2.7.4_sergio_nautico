@@ -1,4 +1,4 @@
-package com.sergio.apirest.controller;
+/*package com.sergio.apirest.controller;
 
 import com.sergio.apirest.services.EmailService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,3 +21,4 @@ public class TestController {
         return "Email sent";
     }
 }
+*/

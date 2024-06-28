@@ -102,7 +102,7 @@ public class SecurityConfiguration {
           .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
           .csrf(AbstractHttpConfigurer::disable)
           .authorizeHttpRequests(req -> req
-            .requestMatchers("/api/v1/auth/**", "/swagger-ui/**", "/v3/api-docs/**", "/api/password-recovery", "/api/v1/t/test-email").permitAll()
+            .requestMatchers("/api/v1/auth/**", "/swagger-ui/**", "/v3/api-docs/**", "/api/password-recovery", "/api/v1/t/test-email", "/api/reservations/**", "/api/timeslots/**").permitAll()
             .anyRequest().authenticated()
           )
           .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

@@ -1,4 +1,4 @@
-package com.sergio.apirest.services;
+/*package com.sergio.apirest.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,4 +20,4 @@ public class PasswordRecoveryService {
             emailService.sendSimpleMessage(userEmail, subject, text);
         }
     }
-}
+}*/
