@@ -20,21 +20,6 @@ public class TimeSlotService {
         return reservationRepository.findAll();
     }
 
-    public Reservation saveReservation(Reservation reservation) {
-        String formattedDate = dateFormat.format(reservation.getDate());
-        TimeSlot timeSlot = timeSlotRepository.findByDateAndHour(formattedDate, String.valueOf(reservation.getHour()))
-                .orElseThrow(() -> new RuntimeException("Hora no disponible"));
-
-        if (timeSlot.getAvailableSeats() <= 0) {
-            throw new RuntimeException("No hay plazas disponibles para esta hora");
-        }
-
-        timeSlot.setAvailableSeats(timeSlot.getAvailableSeats() - 1);
-        timeSlotRepository.save(timeSlot);
-
-        return reservationRepository.save(reservation);
-    }
-
     public List<TimeSlot> getAllTimeSlots() {
         return timeSlotRepository.findAll();
     }

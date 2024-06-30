@@ -17,8 +17,8 @@ public class TimeSlot {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String date; // Consider using LocalDate
-    private String hour; // Consider using LocalTime
+    private String date;
+    private String hour;
     private int availableSeats;
 
     @OneToMany(mappedBy = "timeSlot", cascade = CascadeType.ALL, orphanRemoval = true)
