@@ -10,5 +10,4 @@ import java.util.Optional;
 public interface TimeSlotRepository extends JpaRepository<TimeSlot, Long> {
     Optional<TimeSlot> findByDateAndHour(String date, String hour);
     List<TimeSlot> findByDate(String date);
-
 }

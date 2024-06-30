@@ -2,19 +2,17 @@ package com.sergio.apirest.TimeSlot;
 
 import com.sergio.apirest.Reservation.Reservation;
 import com.sergio.apirest.Reservation.ReservationRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class TimeSlotService {
-    @Autowired
-    private ReservationRepository reservationRepository;
-
-    @Autowired
-    private TimeSlotRepository timeSlotRepository;
+    private final ReservationRepository reservationRepository;
+    private final TimeSlotRepository timeSlotRepository;
 
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -24,7 +22,7 @@ public class TimeSlotService {
 
     public Reservation saveReservation(Reservation reservation) {
         String formattedDate = dateFormat.format(reservation.getDate());
-        TimeSlot timeSlot = timeSlotRepository.findByDateAndHour(formattedDate, reservation.getHour())
+        TimeSlot timeSlot = timeSlotRepository.findByDateAndHour(formattedDate, String.valueOf(reservation.getHour()))
                 .orElseThrow(() -> new RuntimeException("Hora no disponible"));
 
         if (timeSlot.getAvailableSeats() <= 0) {

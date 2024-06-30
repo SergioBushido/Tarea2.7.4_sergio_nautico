@@ -1,6 +1,6 @@
 package com.sergio.apirest.TimeSlot;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -8,9 +8,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/reservations/timeslots")
 @CrossOrigin(origins = "http://localhost:4200")
+@RequiredArgsConstructor
 public class TimeSlotController {
-    @Autowired
-    private TimeSlotService timeSlotService;
+    private final TimeSlotService timeSlotService;
 
     @GetMapping
     public List<TimeSlot> getAllTimeSlots() {

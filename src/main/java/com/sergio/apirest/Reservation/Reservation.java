@@ -1,27 +1,31 @@
 package com.sergio.apirest.Reservation;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.sergio.apirest.TimeSlot.TimeSlot;
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Temporal(TemporalType.DATE)
-    private Date date;
+    private LocalDate date;
+    private LocalTime hour;
+    private String reservationType;
 
-    private String hour;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "time_slot_id")
+    @JsonBackReference
 
-    // Getters y setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public Date getDate() { return date; }
-    public void setDate(Date date) { this.date = date; }
-
-    public String getHour() { return hour; }
-    public void setHour(String hour) { this.hour = hour; }
+    private TimeSlot timeSlot;
 }
