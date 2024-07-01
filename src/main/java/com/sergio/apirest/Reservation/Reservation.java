@@ -1,7 +1,7 @@
 package com.sergio.apirest.Reservation;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.sergio.apirest.TimeSlot.TimeSlot;
+import com.sergio.apirest.Natacion.Natacion;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,8 +24,8 @@ public class Reservation {
     private String reservationType;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "time_slot_id")
+    @JoinColumn(name = "natacion_id")
     @JsonBackReference
 
-    private TimeSlot timeSlot;
+    private Natacion natacion;
 }

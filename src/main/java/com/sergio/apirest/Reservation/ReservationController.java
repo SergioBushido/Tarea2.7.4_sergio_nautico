@@ -12,18 +12,22 @@ import java.util.List;
 @CrossOrigin(origins = "http://localhost:4200")
 public class ReservationController {
 
+    private final ReservationService reservationService;
+
     @Autowired
-    private ReservationService reservationService;
+    public ReservationController(ReservationService reservationService) {
+        this.reservationService = reservationService;
+    }
 
     @GetMapping
     public List<Reservation> getAllReservations() {
         return reservationService.getAllReservations();
     }
 
-    @PostMapping("/{timeSlotId}")
-    public ResponseEntity<Reservation> createReservation(@PathVariable Long timeSlotId, @RequestBody Reservation reservation) {
+    @PostMapping("/{natacionId}")
+    public ResponseEntity<Reservation> createReservation(@PathVariable Long natacionId, @RequestBody Reservation reservation) {
         try {
-            Reservation createdReservation = reservationService.createReservationAndUpdateSeats(timeSlotId, reservation);
+            Reservation createdReservation = reservationService.createReservationAndUpdateSeats(natacionId, reservation);
             return new ResponseEntity<>(createdReservation, HttpStatus.CREATED);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);

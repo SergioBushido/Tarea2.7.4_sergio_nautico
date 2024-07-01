@@ -1,4 +1,4 @@
-package com.sergio.apirest.TimeSlot;
+package com.sergio.apirest.Natacion;
 
 import com.sergio.apirest.Reservation.Reservation;
 import com.sergio.apirest.Reservation.ReservationRepository;
@@ -10,9 +10,9 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class TimeSlotService {
+public class NatacionService {
     private final ReservationRepository reservationRepository;
-    private final TimeSlotRepository timeSlotRepository;
+    private final NatacionRepository natacionRepository;
 
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -20,11 +20,11 @@ public class TimeSlotService {
         return reservationRepository.findAll();
     }
 
-    public List<TimeSlot> getAllTimeSlots() {
-        return timeSlotRepository.findAll();
+    public List<Natacion> getAllTimeSlots() {
+        return natacionRepository.findAll();
     }
 
-    public List<TimeSlot> getTimeSlotsByDate(String date) {
-        return timeSlotRepository.findByDate(date);
+    public List<Natacion> getTimeSlotsByDate(String date) {
+        return natacionRepository.findByDate(date);
     }
 }

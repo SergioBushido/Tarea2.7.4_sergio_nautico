@@ -1,20 +1,18 @@
 package com.sergio.apirest.Reservation;
 
-import com.sergio.apirest.TimeSlot.TimeSlot;
-import com.sergio.apirest.TimeSlot.TimeSlotRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.sergio.apirest.Natacion.Natacion;
+import com.sergio.apirest.Natacion.NatacionRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ReservationService {
-    @Autowired
-    private ReservationRepository reservationRepository;
-
-    @Autowired
-    private TimeSlotRepository timeSlotRepository;
+    private final ReservationRepository reservationRepository;
+    private final NatacionRepository natacionRepository;
 
     private static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final DateTimeFormatter timeFormat = DateTimeFormatter.ofPattern("HH:mm");
@@ -23,21 +21,21 @@ public class ReservationService {
         return reservationRepository.findAll();
     }
 
-    public Reservation createReservationAndUpdateSeats(Long timeSlotId, Reservation reservation) {
-        TimeSlot timeSlot = timeSlotRepository.findById(timeSlotId)
-                .orElseThrow(() -> new RuntimeException("TimeSlot no disponible"));
+    public Reservation createReservationAndUpdateSeats(Long natacionId, Reservation reservation) {
+        Natacion natacion = natacionRepository.findById(natacionId)
+                .orElseThrow(() -> new RuntimeException("Natacion no disponible"));
 
-        if (timeSlot.getAvailableSeats() <= 0) {
+        if (natacion.getAvailableSeats() <= 0) {
             throw new RuntimeException("No hay plazas disponibles para esta hora");
         }
 
         // Reduce el número de asientos disponibles
-        timeSlot.setAvailableSeats(timeSlot.getAvailableSeats() - 1);
-        timeSlotRepository.save(timeSlot);
+        natacion.setAvailableSeats(natacion.getAvailableSeats() - 1);
+        natacionRepository.save(natacion);
 
-        // Establecer el tipo de reserva y asociar el TimeSlot
+        // Establecer el tipo de reserva y asociar la Natacion
         reservation.setReservationType("natacion");
-        reservation.setTimeSlot(timeSlot);
+        reservation.setNatacion(natacion);
 
         // Guarda la reserva
         return reservationRepository.save(reservation);
