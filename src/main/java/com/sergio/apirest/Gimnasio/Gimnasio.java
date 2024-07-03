@@ -1,4 +1,5 @@
-package com.sergio.apirest.Natacion;
+package com.sergio.apirest.Gimnasio;
+
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.sergio.apirest.Reservation.Reservation;
@@ -13,7 +14,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Natacion {
+public class Gimnasio {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,8 +22,8 @@ public class Natacion {
     private String hour;
     private int availableSeats;
 
-    @OneToMany(mappedBy = "natacion", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference(value = "natacion-reservations")
+    @OneToMany(mappedBy = "gimnasio", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference(value = "gimnasio-reservations")
 
     private List<Reservation> reservations;
 }

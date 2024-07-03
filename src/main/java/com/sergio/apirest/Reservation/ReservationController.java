@@ -24,10 +24,22 @@ public class ReservationController {
         return reservationService.getAllReservations();
     }
 
-    @PostMapping("/{natacionId}")
+
+
+    @PostMapping("/natacion/{natacionId}")
     public ResponseEntity<Reservation> createReservation(@PathVariable Long natacionId, @RequestBody Reservation reservation) {
         try {
             Reservation createdReservation = reservationService.createReservationAndUpdateSeats(natacionId, reservation);
+            return new ResponseEntity<>(createdReservation, HttpStatus.CREATED);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/gimnasio/{gimnasioId}")
+    public ResponseEntity<Reservation> createReservationGym(@PathVariable Long gimnasioId, @RequestBody Reservation reservation) {
+        try {
+            Reservation createdReservation = reservationService.createReservationGym(gimnasioId, reservation);
             return new ResponseEntity<>(createdReservation, HttpStatus.CREATED);
         } catch (RuntimeException e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
