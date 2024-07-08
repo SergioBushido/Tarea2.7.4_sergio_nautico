@@ -24,8 +24,6 @@ public class ReservationController {
         return reservationService.getAllReservations();
     }
 
-
-
     @PostMapping("/natacion/{natacionId}")
     public ResponseEntity<Reservation> createReservation(@PathVariable Long natacionId, @RequestBody Reservation reservation) {
         try {
@@ -51,3 +49,30 @@ public class ReservationController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 }
+
+    /*
+@PostMapping("/natacion/{natacionId}/user/{userId}")
+public ResponseEntity<Reservation> createReservation(@PathVariable Long natacionId, @PathVariable Long userId, @RequestBody Reservation reservation) {
+    try {
+        Reservation createdReservation = reservationService.createReservationAndUpdateSeats(natacionId, userId, reservation);
+        return new ResponseEntity<>(createdReservation, HttpStatus.CREATED);
+    } catch (RuntimeException e) {
+        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+    }
+}
+
+    @PostMapping("/gimnasio/{gimnasioId}/user/{userId}")
+    public ResponseEntity<Reservation> createReservationGym(@PathVariable Long gimnasioId, @PathVariable Long userId, @RequestBody Reservation reservation) {
+        try {
+            Reservation createdReservation = reservationService.createReservationGym(gimnasioId, userId, reservation);
+            return new ResponseEntity<>(createdReservation, HttpStatus.CREATED);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<String> handleException(RuntimeException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+}*/

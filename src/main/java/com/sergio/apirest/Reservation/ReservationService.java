@@ -4,6 +4,8 @@ import com.sergio.apirest.Gimnasio.Gimnasio;
 import com.sergio.apirest.Gimnasio.GimnasioRepository;
 import com.sergio.apirest.Natacion.Natacion;
 import com.sergio.apirest.Natacion.NatacionRepository;
+import com.sergio.apirest.repositories.UserRepository;
+import com.sergio.apirest.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,8 @@ public class ReservationService {
     private final ReservationRepository reservationRepository;
     private final NatacionRepository natacionRepository;
     private final GimnasioRepository gimnasioRepository;
+    private final UserRepository userRepository;
+
 
     public List<Reservation> getAllReservations() {
         return reservationRepository.findAll();
@@ -59,4 +63,77 @@ public class ReservationService {
         // Guarda la reserva
         return reservationRepository.save(reservation);
     }
+/*// crear y asignar reservas a usuarios
+    public Reservation createReservation(Reservation reservation, Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        reservation.setUser(user);
+        return reservationRepository.save(reservation);
+    }*/
+
+
 }
+
+/*
+import com.sergio.apirest.Gimnasio.Gimnasio;
+import com.sergio.apirest.Gimnasio.GimnasioRepository;
+import com.sergio.apirest.Natacion.Natacion;
+import com.sergio.apirest.Natacion.NatacionRepository;
+import com.sergio.apirest.repositories.UserRepository;
+import com.sergio.apirest.user.User;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class ReservationService {
+
+    private final ReservationRepository reservationRepository;
+    private final UserRepository userRepository;
+    private final NatacionRepository natacionRepository;
+    private final GimnasioRepository gimnasioRepository;
+
+    @Autowired
+    public ReservationService(ReservationRepository reservationRepository, UserRepository userRepository,
+                              NatacionRepository natacionRepository, GimnasioRepository gimnasioRepository) {
+        this.reservationRepository = reservationRepository;
+        this.userRepository = userRepository;
+        this.natacionRepository = natacionRepository;
+        this.gimnasioRepository = gimnasioRepository;
+    }
+
+    public List<Reservation> getAllReservations() {
+        return reservationRepository.findAll();
+    }
+
+    public Reservation createReservationAndUpdateSeats(Long natacionId, Long userId, Reservation reservation) {
+        Natacion natacion = natacionRepository.findById(natacionId).orElseThrow(() -> new RuntimeException("Natacion not found"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (natacion.getAvailableSeats() <= 0) {
+            throw new RuntimeException("No available seats for this natacion class");
+        }
+
+        natacion.setAvailableSeats(natacion.getAvailableSeats() - 1);
+        reservation.setNatacion(natacion);
+        reservation.setUser(user);
+
+        return reservationRepository.save(reservation);
+    }
+
+    public Reservation createReservationGym(Long gimnasioId, Long userId, Reservation reservation) {
+        Gimnasio gimnasio = gimnasioRepository.findById(gimnasioId).orElseThrow(() -> new RuntimeException("Gimnasio not found"));
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (gimnasio.getAvailableSeats() <= 0) {
+            throw new RuntimeException("No available seats for this gym session");
+        }
+
+        gimnasio.setAvailableSeats(gimnasio.getAvailableSeats() - 1);
+        reservation.setGimnasio(gimnasio);
+        reservation.setUser(user);
+
+        return reservationRepository.save(reservation);
+    }
+}*/

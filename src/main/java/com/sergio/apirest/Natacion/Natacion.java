@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -25,4 +26,9 @@ public class Natacion {
     @JsonManagedReference(value = "natacion-reservations")
 
     private List<Reservation> reservations;
+
+   /* //relacion de natacion con reservations
+    @OneToMany(mappedBy = "natacion", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference(value = "natacion-reservations")
+    private List<Reservation> reservations = new ArrayList<>();*/
 }

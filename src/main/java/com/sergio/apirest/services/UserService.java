@@ -25,7 +25,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public Optional<User> getUserById(int id) {
+    public Optional<User> getUserById(Long id) {
         return userRepository.findById(id);
     }
 
@@ -33,7 +33,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public void deleteUser(int id) {
+    public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
 
@@ -49,7 +49,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserDto updateUser(Integer userId, UserDto userDto) {
+    public UserDto updateUser(Long userId, UserDto userDto) {
         User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
 
         // Actualizar los campos del usuario

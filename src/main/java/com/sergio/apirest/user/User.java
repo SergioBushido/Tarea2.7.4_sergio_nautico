@@ -2,6 +2,7 @@ package com.sergio.apirest.user;
 
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.sergio.apirest.Reservation.Reservation;
 import com.sergio.apirest.user.auth.CustomUserDetails;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -34,6 +35,10 @@ public class User implements CustomUserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Token> tokens;
+
+/*//Relacion de usuarios con reservas
+   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reservation> reservations;*/
 
 
     @Override

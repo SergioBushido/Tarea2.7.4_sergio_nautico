@@ -46,7 +46,7 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
     })
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable int id) {
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
         Optional<User> user = userService.getUserById(id);
         return user.map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
@@ -58,7 +58,7 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
     })
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable int id) {
+    public ResponseEntity<String> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return ResponseEntity.ok("User deleted successfully");
     }
@@ -80,7 +80,7 @@ public class UserController {
                     content = @Content(schema = @Schema(implementation = User.class)))
     })
     @PutMapping("/update/{userId}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable Integer userId, @RequestBody UserDto userDto) {
+    public ResponseEntity<UserDto> updateUser(@PathVariable Long userId, @RequestBody UserDto userDto) {
         try {
             UserDto updatedUser = userService.updateUser(userId, userDto);
             return new ResponseEntity<>(updatedUser, HttpStatus.OK);

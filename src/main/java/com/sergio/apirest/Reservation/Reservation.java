@@ -3,6 +3,7 @@ package com.sergio.apirest.Reservation;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.sergio.apirest.Gimnasio.Gimnasio;
 import com.sergio.apirest.Natacion.Natacion;
+import com.sergio.apirest.user.User;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -33,4 +34,10 @@ public class Reservation {
     @JoinColumn(name = "gimnasio_id")
     @JsonBackReference(value = "gimnasio-reservations")
     private Gimnasio gimnasio;
+
+   /* //relacion del reservation con User
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    @JsonBackReference(value = "user-reservations")
+    private User user;*/
 }
