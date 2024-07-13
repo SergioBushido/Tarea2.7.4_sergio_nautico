@@ -5,6 +5,8 @@ import com.sergio.apirest.Gimnasio.GimnasioRepository;
 import com.sergio.apirest.Natacion.Natacion;
 import com.sergio.apirest.Natacion.NatacionRepository;
 import com.sergio.apirest.repositories.UserRepository;
+import com.sergio.apirest.tenis.Tenis;
+import com.sergio.apirest.tenis.TenisRepository;
 import com.sergio.apirest.user.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,7 @@ public class ReservationService {
     private final NatacionRepository natacionRepository;
     private final GimnasioRepository gimnasioRepository;
     private final UserRepository userRepository;
+    private final TenisRepository tenisRepository;
 
 
     public List<Reservation> getAllReservations() {
@@ -59,6 +62,26 @@ public class ReservationService {
         // Establecer el tipo de reserva y asociar el Gimnasio
         reservation.setReservationType("gimnasio");
         reservation.setGimnasio(gimnasio);
+
+        // Guarda la reserva
+        return reservationRepository.save(reservation);
+    }
+
+    public Reservation createReservationTenis(Long TenisId, Reservation reservation) {
+        Tenis tenis = tenisRepository.findById(TenisId)
+                .orElseThrow(() -> new RuntimeException("Tenis no disponible"));
+
+        if (tenis.getAvailableSeats() <= 0) {
+            throw new RuntimeException("No hay plazas disponibles para esta hora");
+        }
+
+        // Reduce el número de asientos disponibles
+        tenis.setAvailableSeats(tenis.getAvailableSeats() - 1);
+        tenisRepository.save(tenis);
+
+        // Establecer el tipo de reserva y asociar el Gimnasio
+        reservation.setReservationType("tenis");
+        reservation.setTenis(tenis);
 
         // Guarda la reserva
         return reservationRepository.save(reservation);

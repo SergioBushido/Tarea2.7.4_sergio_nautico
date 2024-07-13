@@ -44,6 +44,16 @@ public class ReservationController {
         }
     }
 
+    @PostMapping("/tenis/{tenisId}")
+    public ResponseEntity<Reservation> createReservationTenis(@PathVariable Long tenisId, @RequestBody Reservation reservation) {
+        try {
+            Reservation createdReservation = reservationService.createReservationTenis(tenisId, reservation);
+            return new ResponseEntity<>(createdReservation, HttpStatus.CREATED);
+        } catch (RuntimeException e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+    }
+
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<String> handleException(RuntimeException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
